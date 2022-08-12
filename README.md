@@ -5,6 +5,10 @@ Task1:
 - обЪединение файлов происходит в файл merged.txt, который тоже в папке saves
 - Postgresql
 - Информацию о БД менять в файле task1\src\main\resources\context.properties 
+
+
+
+
 Task2:
 - библиотеки, не входящие в стандартный набор ЯП, находятся в build.gradle в объетке dependencies
 - http://localhost:8080/
