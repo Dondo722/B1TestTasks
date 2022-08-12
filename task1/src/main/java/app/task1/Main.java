@@ -4,8 +4,10 @@ import app.task1.model.CompletedString;
 import app.task1.service.FileGenerator;
 import app.task1.service.FileMerger;
 import app.task1.util.LoadingBar;
+import org.postgresql.util.PSQLException;
 
 import java.io.*;
+import java.nio.file.NoSuchFileException;
 import java.sql.*;
 import java.sql.Date;
 import java.text.ParseException;
@@ -27,31 +29,37 @@ public class Main {
         while (true) {
             printMenu();
             String input = scanner.nextLine();
-            switch (input) {
-                case "1":
-                    FileGenerator generator = new FileGenerator();
-                    generator.createFiles();
-                    break;
-                case "2":
-                    FileMerger merger = new FileMerger();
-                    System.out.println("Введите сочетание символов, которые хотите удалить:");//todo
-                    String symbols = scanner.nextLine();
-                    int linesWithSymbol = merger.mergeFilesWithoutSymbols(symbols);
-                    System.out.println(linesWithSymbol+ " строк удалено");
-                    break;
-                case "3":
-                    createTableIfNotExists(conn);
-                    File file = chooseFile(scanner);
-                    List<CompletedString> completedStrings = parseDataToWrapperClass(file);
-                    importToDMBS(conn, completedStrings);
-                    break;
-                case "4":
-                    countAndPrintSumAndMedian(conn);
-                    break;
-                case "0":
-                    return;
-                default:
-                    System.out.println("Попробуйте ввести ещё раз");
+            try {
+                switch (input) {
+                    case "1":
+                        FileGenerator generator = new FileGenerator();
+                        generator.createFiles();
+                        break;
+                    case "2":
+                        FileMerger merger = new FileMerger();
+                        System.out.println("Введите сочетание символов, которые хотите удалить:");//todo
+                        String symbols = scanner.nextLine();
+                        int linesWithSymbol = merger.mergeFilesWithoutSymbols(symbols);
+                        System.out.println(linesWithSymbol + " строк удалено");
+                        break;
+                    case "3":
+                        createTableIfNotExists(conn);
+                        File file = chooseFile(scanner);
+                        List<CompletedString> completedStrings = parseDataToWrapperClass(file);
+                        importToDMBS(conn, completedStrings);
+                        break;
+                    case "4":
+                        countAndPrintSumAndMedian(conn);
+                        break;
+                    case "0":
+                        return;
+                    default:
+                        System.out.println("Попробуйте ввести ещё раз");
+                }
+            } catch (NoSuchFileException e) {
+                System.out.println("Сначала нужно сгенерировать файлы, чтобы потом их объединить");
+            } catch (PSQLException e) {
+                System.out.println("Сначала нужно импортировать данные в СУБД");
             }
         }
     }

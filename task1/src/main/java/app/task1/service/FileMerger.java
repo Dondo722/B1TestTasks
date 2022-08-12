@@ -3,6 +3,7 @@ package app.task1.service;
 import app.task1.util.LoadingBar;
 
 import java.io.*;
+import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -23,6 +24,9 @@ public class FileMerger {
     private int mergeFilesWithoutSymbolsLogic(String symbols, List<String> allFilesLines) throws IOException {
         int totalSymbolsAppearanceCounter = 0;
         File directory = new File(DIRECTORY_SAVES_PATH);
+        if (!directory.exists()) {
+            throw new NoSuchFileException("Directory is not exist");
+        }
         File[] files = directory.listFiles();
         LoadingBar loadingBar = new LoadingBar(files.length);
         for (File file : files) {
