@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragments/header :: html_head">
+<body>
+<div th:replace="fragments/header :: navbar"></div>
+<div align="center">
+<a type="button" class="btn btn-outline-primary btn-lg" th:href="@{/save/{id}(id = ${statement.id})}">Save</a>
+</div>
+<div style="margin-left: 10px" th:text="${statement.bankName}"/>
+<div align="center">
+    Оборотная ведомость по балансовым счетам
+    <br>
+    за период с <td th:text="${#dates.format(statement.startRecord, 'dd.MM.yyyy')}"/> по
+    <td th:text="${#dates.format(statement.endRecord, 'dd.MM.yyyy')}"/>
+    <br>
+    по банку
+</div>
+<div>
+    <div style="margin-left: 10px" th:text="${#dates.format(statement.sheetCreation, 'dd.MM.yyyy')}"/>
+    <div style="margin-right: 10px" align="right" th:text="${statement.currency}"/>
+</div>
+<table width="1000" border="1" align="center">
+    <thead align="center">
+    <tr >
+        <th></th>
+        <th colspan="2">Входящее сальдо</th>
+        <th colspan="2">Обороты</th>
+        <th colspan="2">Исходящее сальдо</th>
+    </tr>
+    <tr>
+        <th>Б/сч</th>
+        <th>Актив</th>
+        <th>Пассив</th>
+        <th>Дебет</th>
+        <th>Кредит</th>
+        <th>Актив</th>
+        <th>Пассив</th>
+    </tr>
+    </thead>
+        <div th:each="account, iterStat : ${accounts}">
+            <div th:if="${iterStat.first}">
+                <tr bgcolor="#D6EEEE">
+                    <td colspan="7" align="center" th:text="${account.classification.denomination}" />
+                </tr>
+            </div>
+            <div th:unless="${iterStat.first} or ${iterStat.last}">
+                <div th:if="${account.classification != accounts[iterStat.index-1].classification}">
+                    <tr bgcolor="#D6EEEE">
+                        <td colspan="7" align="center" th:text="${account.classification.denomination}" />
+                    </tr>
+                </div>
+            </div>
+            <div th:if="${#strings.length(account.accountNumber) != 4}">
+                <tr bgcolor="#D6EEEE">
+            </div>
+            <div th:unless="${#strings.length(account.accountNumber) != 4}">
+                <tr>
+            </div>
+                <td th:text="${account.accountNumber}" />
+                <td th:text="${account.activeOpeningBalance}" />
+                <td th:text="${account.passiveOpeningBalance}" />
+                <td th:text="${account.debitTurnover}" />
+                <td th:text="${account.debitCredit}" />
+                <td th:text="${account.activeClosingBalance}" />
+                <td th:text="${account.passiveClosingBalance}" />
+            </tr>
+        </div>
+</table>
+</body>
+</html>

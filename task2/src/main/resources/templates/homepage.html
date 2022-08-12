@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: html_head">
+<body>
+<div th:replace="fragments/header :: navbar">
+</div>
+<td>
+    <span th:unless="${message == null}">
+    <div class="alert alert-success" role="alert" align="center" th:text="${message}"></div>
+    </span>
+</td>
+<div style="margin-left: 10px">
+    Данная программа представляет собой веб-интерфейс для:
+    <ol>
+        <li>Загрузки файлов excel формата в СУБД</li>
+        <li>Просмотра загруженных файлов</li>
+        <li>Отображение данных из СУБД по визуальной аналогии с excel-файлом для каждого из загруженных файлов</li>
+        <li>Сохранения файлов с сервера</li>
+    </ol>
+    Программа должна справляться со всеми файлами, оформленными согласно примеру
+</div>
+</body>
+</html>

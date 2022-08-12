@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: html_head">
+<body>
+<div th:replace="fragments/header :: navbar"></div>
+
+<td>
+    <span th:unless="${messageFailure == null}">
+        <div class="alert alert-danger" role="alert" align="center" th:text="${messageFailure}"></div>
+    </span>
+</td>
+<div style="margin-left: 10px">
+    <form method="POST" enctype="multipart/form-data" action="/upload" >
+        Выберите файл для загрузки:
+        <br>
+        <input style="margin-top: 10px" type="file" name="file">
+        <br>
+        <input style="margin-top: 15px" type="submit" value="Загрузить">
+        Нажмите для загрузки файла!
+    </form>
+</div>
+</body>
+</html>
